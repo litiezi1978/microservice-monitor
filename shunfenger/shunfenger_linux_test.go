@@ -96,9 +96,6 @@ var _ = Describe("container_monitor test", func() {
 
 		err = setupVeth()
 		Expect(err).NotTo(HaveOccurred())
-
-		err = setupIP()
-		Expect(err).NotTo(HaveOccurred())
 	})
 
 	AfterEach(func() {
@@ -113,8 +110,8 @@ var _ = Describe("container_monitor test", func() {
 			"prevResult": {
 				"cniVersion":"0.2.0",
                 "ip4": {
-					"ip": "10.0.0.2/24",
-					"gateway": "10.0.0.1",
+					"ip": "172.17.100.234/16",
+					"gateway": "172.17.0.1",
 					"routes": []
 				}
 			}

@@ -163,12 +163,14 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return fmt.Errorf("must be called as chained plugin\n")
 	}
 
-	var podInfo *PodInfo;
+	podInfo := PodInfo{
+		containerID: args.ContainerID,
+		netnsPath: args.Netns,
+		ifname: args.IfName,
+	}
 
-	podInfo.containerID = args.ContainerID
-	podInfo.netnsPath = args.Netns
-	if podInfo.containerID == "" || podInfo.netnsPath == "" {
-		return fmt.Errorf("no conatinerID or netnsPath")
+	if podInfo.containerID == "" || podInfo.netnsPath == "" || podInfo.ifname == ""{
+		return fmt.Errorf("no conatinerID or netnsPath or ifname")
 	}
 	trace.Printf("podInfo.containerId=%s, podInfo.netns=%s", podInfo.containerID, podInfo.netnsPath)
 
@@ -183,12 +185,6 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return err
 	}
 	trace.Printf("podInfo.pid=%s", podInfo.pid)
-
-	podInfo.ifname = args.IfName
-	if podInfo.ifname == "" {
-		return fmt.Errorf("no ifname")
-	}
-	trace.Printf("podInfo.ifname=%s", podInfo.ifname)
 
 	podInfo.ipv4, podInfo.mask, podInfo.gw, err = getIpFromPrevResult(conf)
 	if err!= nil {
