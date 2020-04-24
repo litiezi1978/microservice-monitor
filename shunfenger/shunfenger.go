@@ -206,14 +206,14 @@ func cmdAdd(args *skel.CmdArgs) error {
 		}
 
 		cmd2 := exec.Command("tc", "filter", "add", "dev", podInfo.ifname, "ingress",
-			"bpf", "da", "obj", "lxc_traffic.o", "sec", "ingress")
+			"bpf", "da", "obj", "/opt/cni/bin/lxc_conntrac_01.o", "sec", "ingress")
 		err = cmd2.Run()
 		if err!= nil {
 			return err
 		}
 
 		cmd3 := exec.Command("tc", "filter", "add", "dev", podInfo.ifname, "egress",
-			"bpf", "da", "obj", "lxc_traffic.o", "sec", "egress")
+			"bpf", "da", "obj", "/opt/cni/bin/lxc_conntrac_01.o", "sec", "egress")
 		err = cmd3.Run()
 		if err!= nil {
 			return err
