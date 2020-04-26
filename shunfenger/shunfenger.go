@@ -18,7 +18,7 @@ import (
 var trace *log.Logger
 
 func init(){
-	traceFile, err := os.OpenFile("/var/log/bpfloader.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	traceFile, err := os.OpenFile("/var/log/shunfenger5.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("Failed to open %v", err)
 	}
@@ -199,23 +199,23 @@ func cmdAdd(args *skel.CmdArgs) error {
 	defer netNs.Close()
 
 	err = netNs.Do(func (hostNS ns.NetNS) error{
-		trace.Printf("/data/iproute2/tc qdisc add dev %s clasact", podInfo.ifname)
-		cmd1 := exec.Command("/data/iproute2/tc", "qdisc", "add", "dev", podInfo.ifname, "clsact")
+		trace.Printf("/data/iproute2/tc/tc qdisc add dev %s clsact", podInfo.ifname)
+		cmd1 := exec.Command("/data/iproute2/tc/tc", "qdisc", "add", "dev", podInfo.ifname, "clsact")
 		err = cmd1.Run()
 		if err!= nil {
 			return err
 		}
 
-		trace.Printf("/data/iproute2/tc filter add dev %s ingress bpf da obj /opt/cni/bin/lxc_conntrac_01.o sec ingress", podInfo.ifname)
-		cmd2 := exec.Command("/data/iproute2/tc", "filter", "add", "dev", podInfo.ifname, "ingress",
+		trace.Printf("/data/iproute2/tc/tc filter add dev %s ingress bpf da obj /opt/cni/bin/lxc_conntrac_01.o sec ingress", podInfo.ifname)
+		cmd2 := exec.Command("/data/iproute2/tc/tc", "filter", "add", "dev", podInfo.ifname, "ingress",
 			"bpf", "da", "obj", "/opt/cni/bin/lxc_conntrac_01.o", "sec", "ingress")
 		err = cmd2.Run()
 		if err!= nil {
 			return err
 		}
 
-		trace.Printf("/data/iproute2/tc filter add dev %s egress bpf da obj /opt/cni/bin/lxc_conntrac_01.o sec egress", podInfo.ifname)
-		cmd3 := exec.Command("/data/iproute2/tc", "filter", "add", "dev", podInfo.ifname, "egress",
+		trace.Printf("/data/iproute2/tc/tc filter add dev %s egress bpf da obj /opt/cni/bin/lxc_conntrac_01.o sec egress", podInfo.ifname)
+		cmd3 := exec.Command("/data/iproute2/tc/tc", "filter", "add", "dev", podInfo.ifname, "egress",
 			"bpf", "da", "obj", "/opt/cni/bin/lxc_conntrac_01.o", "sec", "egress")
 		err = cmd3.Run()
 		if err!= nil {

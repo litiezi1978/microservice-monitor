@@ -107,6 +107,7 @@ var _ = Describe("container_monitor test", func() {
 			"cniVersion": "0.2.0",
 			"name": "cni-plugin-container_monitor-test",
 			"type": "container_monitor",
+			"tc_path": "/data/iproute2/tc/tc",
 			"prevResult": {
 				"cniVersion":"0.2.0",
                 "ip4": {
